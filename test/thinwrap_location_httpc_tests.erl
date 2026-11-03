@@ -127,7 +127,7 @@ serve(S, Owner) ->
             _ ->
                 <<"HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n">>
         end,
-    _ = ssl:send(S, Reply),
+    _ = ssl:send(S, connection_close(Reply)),
     ssl:close(S).
 
 read_request(S, Acc) ->
@@ -236,3 +236,13 @@ flush() ->
         {request, _} -> flush()
     after 0 -> ok
     end.
+
+%% The server closes the connection after every response, so it says so:
+%% without `Connection: close` httpc may keep the session and send the next
+%% request on a socket the server is already closing, which stalls that request
+%% until it times out.
+connection_close(<<"HTTP/1.1 ", _/binary>> = Reply) ->
+    [StatusLine, Rest] = binary:split(Reply, <<"\r\n">>),
+    <<StatusLine/binary, "\r\nConnection: close\r\n", Rest/binary>>;
+connection_close(Data) ->
+    Data.
