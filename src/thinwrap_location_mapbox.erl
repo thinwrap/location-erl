@@ -506,12 +506,7 @@ autocomplete(Config, #{input := Text} = I) ->
     %% grouping work; a fresh UUIDv4 (Mapbox's recommended format) keeps a
     %% one-off call valid when none is supplied.
     Query =
-        [
-            {<<"q">>, Text},
-            {<<"access_token">>, token(Config)},
-            {<<"session_token">>, session_token(I)}
-        ] ++
-            language(I) ++
+        [{<<"q">>, Text} | session_query(Config, I)] ++
             %% `country_filter` (ISO 3166-1 alpha-2) → Search Box `country=`
             %% (lowercase, comma-separated), same translation as forward geocode.
             country(I),
@@ -568,9 +563,7 @@ prediction(S) ->
 -doc false.
 -spec place_details(thinwrap_location:config(), map()) -> thinwrap_location:place_details_result().
 place_details(Config, #{place_id := PlaceId} = I) ->
-    Query =
-        [{<<"access_token">>, token(Config)}, {<<"session_token">>, session_token(I)}] ++
-            language(I),
+    Query = session_query(Config, I),
     Url = <<?RETRIEVE_URL/binary, "/", (thinwrap_location_util:quote_segment(PlaceId))/binary>>,
     %% /retrieve answers an id it has no data for with 404 ("No data found for
     %% requested ID"): no such place, not a failed request.
@@ -979,6 +972,10 @@ country(I) ->
         [] -> [];
         Cs -> [{<<"country">>, join([string:lowercase(C) || C <- Cs])}]
     end.
+
+%% The query head shared by /suggest and /retrieve, in the order both send it.
+session_query(Config, I) ->
+    [{<<"access_token">>, token(Config)}, {<<"session_token">>, session_token(I)}] ++ language(I).
 
 %% The caller's Search Box session token, else a fresh UUIDv4.
 session_token(I) ->
