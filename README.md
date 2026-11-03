@@ -72,7 +72,7 @@ reports that print the config. Every config also accepts `transport` (see
 [below](#bring-your-own-http-client)).
 
 Per-provider details (endpoints, auth, error mapping, passthrough) live in
-[`docs/providers/`](docs/providers/) — one page per provider.
+[`docs/providers/`](https://github.com/thinwrap/location-erl/tree/main/docs/providers) — one page per provider.
 
 ## Routing options that cost money
 
