@@ -1,0 +1,49 @@
+{
+    "_comment": "Canonical cross-language parity vectors (TS/PHP/Go/Python). Sourced from TS locked test vectors.",
+    "_sourceStory": "location-1-4-polyline-public-api",
+    "encodePolyline": [
+        {
+            "name": "Google docs canonical example",
+            "input": [
+                {"lat": 38.5, "lng": -120.2},
+                {"lat": 40.7, "lng": -120.95},
+                {"lat": 43.252, "lng": -126.453}
+            ],
+            "expected": "_p~iF~ps|U_ulLnnqC_mqNvxq`@"
+        },
+        {"name": "empty", "input": [], "expected": ""},
+        {"name": "single point at origin", "input": [{"lat": 0, "lng": 0}], "expected": "??"}
+    ],
+    "decodePolyline": [
+        {
+            "name": "Google docs canonical example",
+            "input": "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+            "expected": [
+                {"lat": 38.5, "lng": -120.2},
+                {"lat": 40.7, "lng": -120.95},
+                {"lat": 43.252, "lng": -126.453}
+            ]
+        }
+    ],
+    "decodeFlexPolyline": [
+        {
+            "name": "HERE round_half_even.txt row 1",
+            "input": "BFoz5xJ67i1B1B7PzIhaxL7Y",
+            "expected": [
+                {"lat": 50.10228, "lng": 8.69821},
+                {"lat": 50.10201, "lng": 8.69567},
+                {"lat": 50.10063, "lng": 8.69150},
+                {"lat": 50.09878, "lng": 8.68752}
+            ]
+        }
+    ],
+    "encodeEsriPaths": [
+        {
+            "name": "single-path two-point",
+            "input": [[{"lat": 40, "lng": -74}, {"lat": 41, "lng": -73}]],
+            "expected": {"paths": [[[-74, 40], [-73, 41]]], "spatialReference": {"wkid": 4326}}
+        },
+        {"name": "empty", "input": [], "expected": {"paths": [], "spatialReference": {"wkid": 4326}}},
+        {"name": "empty inner path", "input": [[]], "expected": {"paths": [[]], "spatialReference": {"wkid": 4326}}}
+    ]
+}

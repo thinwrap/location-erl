@@ -1,0 +1,19 @@
+{application, thinwrap_location, [
+    {description,
+        "Lightweight, SDK-free, zero-dependency wrapper for routing, distance matrix, "
+        "geocoding and isochrone across Google, Mapbox, HERE, ESRI, TomTom and OSRM."},
+    {vsn, "1.3.0"},
+    {registered, []},
+    %% inets + ssl back the default httpc transport (a caller who injects their
+    %% own transport still gets them started, which is harmless); crypto makes
+    %% the Mapbox session-token UUIDs.
+    {applications, [kernel, stdlib, crypto, inets, ssl, public_key]},
+    {env, []},
+    {modules, []},
+    {licenses, ["MIT"]},
+    {links, [
+        {"GitHub", "https://github.com/thinwrap/location-erl"},
+        {"Changelog", "https://github.com/thinwrap/location-erl/blob/main/CHANGELOG.md"},
+        {"Website", "https://thinwrap.dev"}
+    ]}
+]}.
